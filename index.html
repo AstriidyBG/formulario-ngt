@@ -7,8 +7,8 @@
 <style>
   body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #5B86E5, #36D1DC);
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #4b79a1, #283e51);
     color: #fff;
     min-height: 100vh;
     display: flex;
@@ -26,9 +26,8 @@
   }
   h1 {
     text-align: center;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
   }
   label {
     display: block;
@@ -40,7 +39,7 @@
     display: block;
     font-size: 0.85rem;
     font-weight: 300;
-    color: #a0d8f7;
+    color: #a0c4ff;
     margin-top: 4px;
   }
   input[type=text],
@@ -54,7 +53,6 @@
     font-size: 1rem;
     color: #222;
     background-color: #f0f8ff;
-    box-shadow: inset 2px 2px 5px #b6c8ff;
     resize: vertical;
   }
   textarea {
@@ -64,39 +62,34 @@
     margin-top: 30px;
     width: 100%;
     padding: 14px 0;
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    background: #2a9d8f;
     border: none;
     border-radius: 12px;
     font-weight: 700;
     font-size: 1.2rem;
     color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px #ff4b2b;
+    transition: background 0.3s ease;
   }
   button:hover {
-    background: linear-gradient(45deg, #ff4b2b, #ff416c);
-    box-shadow: 0 0 25px #ff4b2b;
+    background: #21867a;
   }
   .result {
     margin-top: 25px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #264653;
     padding: 20px;
     border-radius: 15px;
     font-family: monospace;
     white-space: pre-wrap;
     font-size: 1rem;
     color: #eee;
-    box-shadow: inset 0 0 10px #ff4b2b;
   }
   .copy-btn {
     margin-top: 15px;
-    background: #4caf50;
-    box-shadow: 0 0 15px #4caf50;
+    background: #e76f51;
   }
   .copy-btn:hover {
-    background: #45a049;
-    box-shadow: 0 0 25px #45a049;
+    background: #d3543b;
   }
   @media (max-width: 600px) {
     .container {
@@ -110,7 +103,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>📜 Formulário N.G.T</h1>
+  <h1>Formulário N.G.T</h1>
 
   <label for="age">1 ➜ Qual a sua idade? <span class="explanation">(Digite só números, ex: 18)</span></label>
   <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" />
@@ -123,24 +116,24 @@
 
   <label for="role">4 ➜ Escolha sua função na família <span class="explanation">(Sua principal contribuição)</span></label>
   <select id="role">
-    <option value="" disabled selected>-- Selecione sua função --</option>
+    <option value="" selected>-- Selecione sua função --</option>
     <option>🛡️ ∂єƒєทsσr</option>
     <option>🎯 rєcrυτα∂σr</option>
     <option>🧠 cσทsєℓнєirσ</option>
     <option>🧲 cคя¡รмค</option>
   </select>
 
-  <label for="activityLevel">5 ➜ Nível de atividade <span class="explanation">(Com que frequência você pretende participar e ajudar na família)</span></label>
+  <label for="activityLevel">5 ➜ Nível de atividade <span class="explanation">(Com que frequência pretende participar e ajudar)</span></label>
   <select id="activityLevel">
-    <option value="" disabled selected>-- Selecione seu nível --</option>
+    <option value="" selected>-- Selecione seu nível de atividade --</option>
     <option>Baixo</option>
     <option>Médio</option>
     <option>Alto</option>
   </select>
 
-  <label for="activeHours">6 ➜ Qual seu horário mais ativo? <span class="explanation">(Quando você costuma jogar ou participar)</span></label>
+  <label for="activeHours">6 ➜ Qual seu horário mais ativo? <span class="explanation">(Quando costuma jogar ou participar)</span></label>
   <select id="activeHours">
-    <option value="" disabled selected>-- Selecione seu horário --</option>
+    <option value="" selected>-- Selecione seu horário mais ativo --</option>
     <option>Manhã</option>
     <option>Tarde</option>
     <option>Noite</option>
@@ -165,7 +158,7 @@
   const resultText = document.getElementById('resultText');
 
   function buildFormattedText(data) {
-    return `𑁍ࠬܓ𝘍𝘰𝘳𝘮𝘶𝘭𝘢́𝘳𝘪𝘰 𝘯.𝘨.𝘵 : 📜
+    return `𑁍ࠬܓ Formulário N.G.T : 📜
 ━━━━━━━━━━━━━━━━━━
 1 ➜ Qual a sua idade? 🧬⏳
 ⌦ ${data.age || '___'} anos 🕐
