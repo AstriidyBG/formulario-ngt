@@ -7,7 +7,6 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-  /* Reset */
   * {
     box-sizing: border-box;
   }
@@ -19,8 +18,8 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 30px;
+    align-items: flex-start;
+    padding: 30px 15px;
     color: #f0f4f8;
   }
 
@@ -35,204 +34,257 @@
 
   .container {
     position: relative;
-    background: rgba(23, 42, 69, 0.95);
-    padding: 40px 50px 50px;
+    background: rgba(23, 42, 69, 0.97);
+    padding: 30px 35px 40px;
     border-radius: 18px;
-    max-width: 700px;
+    max-width: 600px;
     width: 100%;
     box-shadow:
-      0 8px 24px rgba(0,0,0,0.4),
-      inset 0 0 30px rgba(255,255,255,0.05);
+      0 8px 22px rgba(0,0,0,0.45),
+      inset 0 0 38px rgba(255,255,255,0.05);
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
   h1 {
-    font-weight: 600;
-    font-size: 2.8rem;
-    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin: 0 0 8px;
     text-align: center;
-    text-shadow: 0 0 8px #64b5f6;
-    letter-spacing: 1px;
+    text-shadow: 0 0 12px #64b5f6;
+    letter-spacing: 1.2px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 14px 22px;
+    box-shadow: 0 3px 9px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   label {
-    display: block;
     font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 20px;
-    margin-bottom: 8px;
-    position: relative;
-    padding-left: 28px;
+    font-size: 1rem;
+    color: #cfd8dc;
   }
   label .explanation {
     display: block;
     font-weight: 400;
     font-size: 0.85rem;
     color: #90caf9;
-    margin-top: 4px;
+    margin-top: 2px;
     font-style: italic;
   }
 
-  /* ícones simples no label */
-  label::before {
-    content: "📝";
-    position: absolute;
-    left: 0;
-    top: 2px;
-    font-size: 18px;
-  }
-  /* mudar ícones específicos pelo for/id */
-  label[for="age"]::before { content: "🧬"; }
-  label[for="recruiter"]::before { content: "🛰"; }
-  label[for="preferredName"]::before { content: "👤"; }
-  label[for="role"]::before { content: "🎖️"; }
-  label[for="activityLevel"]::before { content: "📈"; }
-  label[for="activeHours"]::before { content: "🕒"; }
-  label[for="previousFamily"]::before { content: "🏰"; }
-  label[for="notes"]::before { content: "💬"; }
-
   input[type=text],
   input[type=number],
-  select,
   textarea {
     width: 100%;
-    padding: 14px 18px;
-    border-radius: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
     border: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 400;
     color: #1a1a1a;
     background: #e3f2fd;
-    box-shadow:
-      0 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.15);
     transition: box-shadow 0.3s ease, background 0.3s ease;
     font-family: 'Poppins', Arial, sans-serif;
     resize: vertical;
   }
   input[type=text]:focus,
   input[type=number]:focus,
-  select:focus,
   textarea:focus {
     outline: none;
     background: #bbdefb;
-    box-shadow:
-      0 0 10px #64b5f6;
+    box-shadow: 0 0 10px #64b5f6;
   }
-  textarea {
-    min-height: 100px;
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
-  button {
-    margin-top: 35px;
-    width: 100%;
-    padding: 16px 0;
+  .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .radio-group label {
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+    color: #e1e8f0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .radio-group input[type="radio"] {
+    cursor: pointer;
+  }
+  .radio-group label:hover {
+    color: #90caf9;
+  }
+
+  .btn {
+    padding: 14px 0;
     border-radius: 14px;
     border: none;
-    font-weight: 600;
-    font-size: 1.3rem;
+    font-weight: 700;
+    font-size: 1.1rem;
     cursor: pointer;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+  }
+  .btn-primary {
     background: linear-gradient(45deg, #42a5f5, #1e88e5);
     color: #f0f4f8;
-    box-shadow:
-      0 4px 12px rgba(30, 136, 229, 0.7);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    font-family: 'Poppins', Arial, sans-serif;
+    box-shadow: 0 5px 15px rgba(30, 136, 229, 0.7);
   }
-  button:hover {
+  .btn-primary:hover {
     background: linear-gradient(45deg, #1e88e5, #1565c0);
-    box-shadow:
-      0 6px 18px rgba(21, 101, 192, 0.9);
+    box-shadow: 0 7px 18px rgba(21, 101, 192, 0.9);
   }
-  button:active {
+  .btn-copy {
+    background: linear-gradient(45deg, #f44336, #e53935);
+    color: #f0f4f8;
+    margin-top: 12px;
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.8);
+  }
+  .btn-copy:hover {
+    background: linear-gradient(45deg, #e53935, #b71c1c);
+    box-shadow: 0 7px 18px rgba(183, 28, 28, 0.9);
+  }
+  .btn:active {
     transform: scale(0.97);
   }
 
-  .copy-btn {
-    background: linear-gradient(45deg, #f44336, #e53935);
-    margin-top: 12px;
-  }
-  .copy-btn:hover {
-    background: linear-gradient(45deg, #e53935, #b71c1c);
-  }
-
-  .result {
-    margin-top: 30px;
+  pre.result {
+    margin-top: 20px;
     background: #0d47a1;
-    padding: 25px;
-    border-radius: 16px;
+    padding: 18px 22px;
+    border-radius: 14px;
     font-family: monospace;
     white-space: pre-wrap;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #cfd8dc;
-    box-shadow:
-      0 8px 24px rgba(13,71,161,0.8);
+    box-shadow: 0 6px 18px rgba(13,71,161,0.8);
+    max-height: 280px;
+    overflow-y: auto;
   }
 
   @media (max-width: 600px) {
     .container {
-      padding: 30px 25px 40px;
+      padding: 25px 20px 30px;
     }
     h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
+    }
+    .radio-group {
+      gap: 12px;
     }
   }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container" role="main" aria-label="Formulário N.G.T">
   <h1>Formulário N.G.T</h1>
 
-  <label for="age">1 ➜ Qual a sua idade? <span class="explanation">(Digite só números, ex: 18)</span></label>
-  <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" />
+  <section class="card">
+    <label for="age">1 ➜ Qual a sua idade? 
+      <span class="explanation">(Digite só números, ex: 18)</span>
+    </label>
+    <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" aria-required="true" />
+  </section>
 
-  <label for="recruiter">2 ➜ Nome do seu recrutador? <span class="explanation">(Quem te indicou para entrar na família)</span></label>
-  <input type="text" id="recruiter" placeholder="Ex: Fanático" />
+  <section class="card">
+    <label for="recruiter">2 ➜ Nome do seu recrutador? 
+      <span class="explanation">(Quem te indicou para entrar na família)</span>
+    </label>
+    <input type="text" id="recruiter" placeholder="Ex: Fanático" aria-required="true" />
+  </section>
 
-  <label for="preferredName">3 ➜ Como prefere ser chamado? <span class="explanation">(Seu nome ou apelido dentro da família)</span></label>
-  <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
+  <section class="card">
+    <label for="preferredName">3 ➜ Como prefere ser chamado? 
+      <span class="explanation">(Seu nome ou apelido dentro da família)</span>
+    </label>
+    <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" aria-required="true" />
+  </section>
 
-  <label for="role">4 ➜ Escolha sua função na família <span class="explanation">(Sua principal contribuição)</span></label>
-  <select id="role">
-    <option value="" selected>-- Selecione sua função --</option>
-    <option>🛡️ ∂єƒєทsσr</option>
-    <option>🎯 rєcrυτα∂σr</option>
-    <option>🧠 cσทsєℓнєirσ</option>
-    <option>🧲 cคя¡รмค</option>
-  </select>
+  <section class="card" aria-labelledby="labelRole">
+    <label id="labelRole">4 ➜ Escolha sua função na família 
+      <span class="explanation">(Sua principal contribuição)</span>
+    </label>
+    <div class="radio-group" role="radiogroup" aria-required="true" aria-labelledby="labelRole">
+      <label><input type="radio" name="role" value="🛡️ ∂єƒєทsσr" /> 🛡️ ∂єƒєทsσr</label>
+      <label><input type="radio" name="role" value="🎯 rєcrυτα∂σr" /> 🎯 rєcrυτα∂σr</label>
+      <label><input type="radio" name="role" value="🧠 cσทsєℓнєirσ" /> 🧠 cσทsєℓнєirσ</label>
+      <label><input type="radio" name="role" value="🧲 cคя¡รмค" /> 🧲 cคя¡รмค</label>
+    </div>
+  </section>
 
-  <label for="activityLevel">5 ➜ Nível de atividade <span class="explanation">(Com que frequência pretende participar e ajudar)</span></label>
-  <select id="activityLevel">
-    <option value="" selected>-- Selecione seu nível de atividade --</option>
-    <option>Baixo</option>
-    <option>Médio</option>
-    <option>Alto</option>
-  </select>
+  <section class="card" aria-labelledby="labelActivity">
+    <label id="labelActivity">5 ➜ Nível de atividade 
+      <span class="explanation">(Com que frequência pretende participar e ajudar)</span>
+    </label>
+    <div class="radio-group" role="radiogroup" aria-required="true" aria-labelledby="labelActivity">
+      <label><input type="radio" name="activityLevel" value="Baixo" /> Baixo</label>
+      <label><input type="radio" name="activityLevel" value="Médio" /> Médio</label>
+      <label><input type="radio" name="activityLevel" value="Alto" /> Alto</label>
+    </div>
+  </section>
 
-  <label for="activeHours">6 ➜ Qual seu horário mais ativo? <span class="explanation">(Quando costuma jogar ou participar)</span></label>
-  <select id="activeHours">
-    <option value="" selected>-- Selecione seu horário mais ativo --</option>
-    <option>Manhã</option>
-    <option>Tarde</option>
-    <option>Noite</option>
-    <option>Madrugada</option>
-  </select>
+  <section class="card" aria-labelledby="labelHours">
+    <label id="labelHours">6 ➜ Qual seu horário mais ativo? 
+      <span class="explanation">(Quando costuma jogar ou participar)</span>
+    </label>
+    <div class="radio-group" role="radiogroup" aria-required="true" aria-labelledby="labelHours">
+      <label><input type="radio" name="activeHours" value="Manhã" /> Manhã</label>
+      <label><input type="radio" name="activeHours" value="Tarde" /> Tarde</label>
+      <label><input type="radio" name="activeHours" value="Noite" /> Noite</label>
+      <label><input type="radio" name="activeHours" value="Madrugada" /> Madrugada</label>
+    </div>
+  </section>
 
-  <label for="previousFamily">7 ➜ Já participou de outra família? <span class="explanation">(Conte um pouco sobre sua experiência, se quiser)</span></label>
-  <textarea id="previousFamily" placeholder="Escreva aqui..."></textarea>
+  <section class="card">
+    <label for="previousFamily">7 ➜ Já participou de outra família? 
+      <span class="explanation">(Conte um pouco sobre sua experiência, se quiser)</span>
+    </label>
+    <textarea id="previousFamily" placeholder="Escreva aqui..." rows="3"></textarea>
+  </section>
 
-  <label for="notes">8 ➜ Algo mais que queira acrescentar? <span class="explanation">(Observações, links, ou qualquer coisa)</span></label>
-  <textarea id="notes" placeholder="Escreva aqui..."></textarea>
+  <section class="card">
+    <label for="notes">8 ➜ Algo mais que queira acrescentar? 
+      <span class="explanation">(Observações, links, ou qualquer coisa)</span>
+    </label>
+    <textarea id="notes" placeholder="Escreva aqui..." rows="3"></textarea>
+  </section>
 
-  <button id="finalizeBtn">Finalizar e mostrar resultado</button>
-  <button id="copyBtn" class="copy-btn" style="display:none;">📋 Copiar formulário</button>
+  <button id="finalizeBtn" class="btn btn-primary" type="button" aria-label="Finalizar e mostrar resultado">
+    Finalizar e mostrar resultado
+  </button>
+  <button id="copyBtn" class="btn btn-copy" type="button" style="display:none;" aria-label="Copiar formulário">
+    📋 Copiar formulário
+  </button>
 
-  <pre class="result" id="resultText" style="display:none;"></pre>
+  <pre class="result" id="resultText" style="display:none;" aria-live="polite"></pre>
 </div>
 
 <script>
-  const finalizeBtn = document.getElementById('finalizeBtn');
-  const copyBtn = document.getElementById('copyBtn');
-  const resultText = document.getElementById('resultText');
+  function getRadioValue(name) {
+    const radios = document.getElementsByName(name);
+    for (let r of radios) {
+      if (r.checked) return r.value;
+    }
+    return '';
+  }
 
   function buildFormattedText(data) {
     return `𑁍ࠬܓ Formulário N.G.T : 📜
@@ -265,14 +317,18 @@
 `;
   }
 
+  const finalizeBtn = document.getElementById('finalizeBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const resultText = document.getElementById('resultText');
+
   finalizeBtn.addEventListener('click', () => {
     const data = {
       age: document.getElementById('age').value.trim(),
       recruiter: document.getElementById('recruiter').value.trim(),
       preferredName: document.getElementById('preferredName').value.trim(),
-      role: document.getElementById('role').value,
-      activityLevel: document.getElementById('activityLevel').value,
-      activeHours: document.getElementById('activeHours').value,
+      role: getRadioValue('role'),
+      activityLevel: getRadioValue('activityLevel'),
+      activeHours: getRadioValue('activeHours'),
       previousFamily: document.getElementById('previousFamily').value.trim(),
       notes: document.getElementById('notes').value.trim(),
     };
