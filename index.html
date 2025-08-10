@@ -5,95 +5,172 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Formulário N.G.T</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #4b79a1, #283e51);
-    color: #fff;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 30px;
+    color: #f0f4f8;
   }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.1), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .container {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 30px 40px;
-    border-radius: 15px;
+    position: relative;
+    background: rgba(23, 42, 69, 0.95);
+    padding: 40px 50px 50px;
+    border-radius: 18px;
     max-width: 700px;
     width: 100%;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.4),
+      inset 0 0 30px rgba(255,255,255,0.05);
+    z-index: 1;
   }
+
   h1 {
-    text-align: center;
-    font-size: 2.5rem;
+    font-weight: 600;
+    font-size: 2.8rem;
     margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 8px #64b5f6;
+    letter-spacing: 1px;
   }
+
   label {
     display: block;
+    font-weight: 600;
     font-size: 1.1rem;
     margin-top: 20px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 28px;
   }
   label .explanation {
     display: block;
+    font-weight: 400;
     font-size: 0.85rem;
-    font-weight: 300;
-    color: #a0c4ff;
+    color: #90caf9;
     margin-top: 4px;
+    font-style: italic;
   }
+
+  /* ícones simples no label */
+  label::before {
+    content: "📝";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-size: 18px;
+  }
+  /* mudar ícones específicos pelo for/id */
+  label[for="age"]::before { content: "🧬"; }
+  label[for="recruiter"]::before { content: "🛰"; }
+  label[for="preferredName"]::before { content: "👤"; }
+  label[for="role"]::before { content: "🎖️"; }
+  label[for="activityLevel"]::before { content: "📈"; }
+  label[for="activeHours"]::before { content: "🕒"; }
+  label[for="previousFamily"]::before { content: "🏰"; }
+  label[for="notes"]::before { content: "💬"; }
+
   input[type=text],
   input[type=number],
   select,
   textarea {
     width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
+    padding: 14px 18px;
+    border-radius: 12px;
     border: none;
     font-size: 1rem;
-    color: #222;
-    background-color: #f0f8ff;
+    font-weight: 400;
+    color: #1a1a1a;
+    background: #e3f2fd;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.15);
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+    font-family: 'Poppins', Arial, sans-serif;
     resize: vertical;
   }
-  textarea {
-    min-height: 80px;
+  input[type=text]:focus,
+  input[type=number]:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    background: #bbdefb;
+    box-shadow:
+      0 0 10px #64b5f6;
   }
+  textarea {
+    min-height: 100px;
+  }
+
   button {
-    margin-top: 30px;
+    margin-top: 35px;
     width: 100%;
-    padding: 14px 0;
-    background: #2a9d8f;
+    padding: 16px 0;
+    border-radius: 14px;
     border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: white;
+    font-weight: 600;
+    font-size: 1.3rem;
     cursor: pointer;
-    transition: background 0.3s ease;
+    background: linear-gradient(45deg, #42a5f5, #1e88e5);
+    color: #f0f4f8;
+    box-shadow:
+      0 4px 12px rgba(30, 136, 229, 0.7);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Poppins', Arial, sans-serif;
   }
   button:hover {
-    background: #21867a;
+    background: linear-gradient(45deg, #1e88e5, #1565c0);
+    box-shadow:
+      0 6px 18px rgba(21, 101, 192, 0.9);
   }
-  .result {
-    margin-top: 25px;
-    background: #264653;
-    padding: 20px;
-    border-radius: 15px;
-    font-family: monospace;
-    white-space: pre-wrap;
-    font-size: 1rem;
-    color: #eee;
+  button:active {
+    transform: scale(0.97);
   }
+
   .copy-btn {
-    margin-top: 15px;
-    background: #e76f51;
+    background: linear-gradient(45deg, #f44336, #e53935);
+    margin-top: 12px;
   }
   .copy-btn:hover {
-    background: #d3543b;
+    background: linear-gradient(45deg, #e53935, #b71c1c);
   }
+
+  .result {
+    margin-top: 30px;
+    background: #0d47a1;
+    padding: 25px;
+    border-radius: 16px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    color: #cfd8dc;
+    box-shadow:
+      0 8px 24px rgba(13,71,161,0.8);
+  }
+
   @media (max-width: 600px) {
     .container {
-      padding: 20px;
+      padding: 30px 25px 40px;
     }
     h1 {
       font-size: 2rem;
