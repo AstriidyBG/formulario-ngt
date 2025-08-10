@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Formulário N.G.T</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #5B86E5, #36D1DC);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  }
+  h1 {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+  }
+  label {
+    display: block;
+    font-size: 1.1rem;
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  label .explanation {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #a0d8f7;
+    margin-top: 4px;
+  }
+  input[type=text],
+  input[type=number],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    color: #222;
+    background-color: #f0f8ff;
+    box-shadow: inset 2px 2px 5px #b6c8ff;
+    resize: vertical;
+  }
+  textarea {
+    min-height: 80px;
+  }
+  button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px #ff4b2b;
+  }
+  button:hover {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    box-shadow: 0 0 25px #ff4b2b;
+  }
+  .result {
+    margin-top: 25px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    font-size: 1rem;
+    color: #eee;
+    box-shadow: inset 0 0 10px #ff4b2b;
+  }
+  .copy-btn {
+    margin-top: 15px;
+    background: #4caf50;
+    box-shadow: 0 0 15px #4caf50;
+  }
+  .copy-btn:hover {
+    background: #45a049;
+    box-shadow: 0 0 25px #45a049;
+  }
+  @media (max-width: 600px) {
+    .container {
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📜 Formulário N.G.T</h1>
+
+  <label for="age">1 ➜ Qual a sua idade? <span class="explanation">(Digite só números, ex: 18)</span></label>
+  <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" />
+
+  <label for="recruiter">2 ➜ Nome do seu recrutador? <span class="explanation">(Quem te indicou para entrar na família)</span></label>
+  <input type="text" id="recruiter" placeholder="Ex: Fanático" />
+
+  <label for="preferredName">3 ➜ Como prefere ser chamado? <span class="explanation">(Seu nome ou apelido dentro da família)</span></label>
+  <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
+
+  <label for="role">4 ➜ Escolha sua função na família <span class="explanation">(Sua principal contribuição)</span></label>
+  <select id="role">
+    <option value="" disabled selected>-- Selecione sua função --</option>
+    <option>🛡️ ∂єƒєทsσr</option>
+    <option>🎯 rєcrυτα∂σr</option>
+    <option>🧠 cσทsєℓнєirσ</option>
+    <option>🧲 cคя¡รмค</option>
+  </select>
+
+  <label for="activityLevel">5 ➜ Nível de atividade <span class="explanation">(Com que frequência você pretende participar e ajudar na família)</span></label>
+  <select id="activityLevel">
+    <option value="" disabled selected>-- Selecione seu nível --</option>
+    <option>Baixo</option>
+    <option>Médio</option>
+    <option>Alto</option>
+  </select>
+
+  <label for="activeHours">6 ➜ Qual seu horário mais ativo? <span class="explanation">(Quando você costuma jogar ou participar)</span></label>
+  <select id="activeHours">
+    <option value="" disabled selected>-- Selecione seu horário --</option>
+    <option>Manhã</option>
+    <option>Tarde</option>
+    <option>Noite</option>
+    <option>Madrugada</option>
+  </select>
+
+  <label for="previousFamily">7 ➜ Já participou de outra família? <span class="explanation">(Conte um pouco sobre sua experiência, se quiser)</span></label>
+  <textarea id="previousFamily" placeholder="Escreva aqui..."></textarea>
+
+  <label for="notes">8 ➜ Algo mais que queira acrescentar? <span class="explanation">(Observações, links, ou qualquer coisa)</span></label>
+  <textarea id="notes" placeholder="Escreva aqui..."></textarea>
+
+  <button id="finalizeBtn">Finalizar e mostrar resultado</button>
+  <button id="copyBtn" class="copy-btn" style="display:none;">📋 Copiar formulário</button>
+
+  <pre class="result" id="resultText" style="display:none;"></pre>
+</div>
+
+<script>
+  const finalizeBtn = document.getElementById('finalizeBtn');
+  const copyBtn = document.getElementById('copyBtn');
+  const resultText = document.getElementById('resultText');
+
+  function buildFormattedText(data) {
+    return `𑁍ࠬܓ𝘍𝘰𝘳𝘮𝘶𝘭𝘢́𝘳𝘪𝘰 𝘯.𝘨.𝘵 : 📜
+━━━━━━━━━━━━━━━━━━
+1 ➜ Qual a sua idade? 🧬⏳
+⌦ ${data.age || '___'} anos 🕐
+━━━━━━━━━━━━━━━━━━
+2 ➜ Nome do seu recrutador? 🛰🧠
+⌦ ${data.recruiter || '___'} ! 🕵️‍♂️
+━━━━━━━━━━━━━━━━━━
+3 ➜ Como prefere ser chamado? 📝
+⌦ ${data.preferredName || '___'} ! 🗺️
+━━━━━━━━━━━━━━━━━━
+4 ➜ Função escolhida 🎖️
+⌦ ${data.role || '___'}
+━━━━━━━━━━━━━━━━━━
+5 ➜ Nível de atividade 📈
+⌦ ${data.activityLevel || '___'}
+━━━━━━━━━━━━━━━━━━
+6 ➜ Horário mais ativo 🕒
+⌦ ${data.activeHours || '___'}
+━━━━━━━━━━━━━━━━━━
+7 ➜ Já participou de outra família? 🏰
+⌦ ${data.previousFamily || '___'}
+━━━━━━━━━━━━━━━━━━
+8 ➜ Observações adicionais
+⌦ ${data.notes || '___'}
+━━━━━━━━━━━━━━━━━━
+(Enviado via formulário N.G.T)
+`;
+  }
+
+  finalizeBtn.addEventListener('click', () => {
+    const data = {
+      age: document.getElementById('age').value.trim(),
+      recruiter: document.getElementById('recruiter').value.trim(),
+      preferredName: document.getElementById('preferredName').value.trim(),
+      role: document.getElementById('role').value,
+      activityLevel: document.getElementById('activityLevel').value,
+      activeHours: document.getElementById('activeHours').value,
+      previousFamily: document.getElementById('previousFamily').value.trim(),
+      notes: document.getElementById('notes').value.trim(),
+    };
+
+    const formatted = buildFormattedText(data);
+    resultText.textContent = formatted;
+    resultText.style.display = 'block';
+    copyBtn.style.display = 'block';
+    copyBtn.textContent = "📋 Copiar formulário";
+    copyBtn.focus();
+    resultText.scrollIntoView({behavior: 'smooth'});
+  });
+
+  copyBtn.addEventListener('click', () => {
+    const text = resultText.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.textContent = 'Copiado ✅';
+      setTimeout(() => copyBtn.textContent = "📋 Copiar formulário", 2000);
+    }).catch(() => {
+      alert('Não foi possível copiar automaticamente. Copie manualmente.');
+    });
+  });
+</script>
+</body>
+</html>
