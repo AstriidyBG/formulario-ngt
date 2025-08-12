@@ -81,20 +81,39 @@
 
   .tema-select {
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
   }
 
-  select {
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1.5px solid #ccc;
-    font-size: 1.05rem;
+  .tema-select label {
     cursor: pointer;
-    transition: border-color 0.2s ease;
+    font-weight: 600;
+    color: inherit;
+    user-select: none;
+    padding: 6px 14px;
+    border-radius: 14px;
+    background: #e7e9ec;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 2.5px solid transparent;
   }
 
-  select:hover, select:focus {
-    border-color: #4285f4;
-    outline: none;
+  body.tema-escuro .tema-select label {
+    background: #4a4d52;
+  }
+
+  body.tema-azul .tema-select label {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .tema-select input[type="radio"] {
+    display: none;
+  }
+
+  .tema-select input[type="radio"]:checked + label {
+    background-color: #4285f4;
+    color: #fff;
+    border-color: #3367d6;
   }
 
   h2.section-title {
@@ -283,6 +302,11 @@
       font-size: 1.05rem;
       padding: 12px 0;
     }
+
+    .tema-select {
+      justify-content: center;
+      gap: 8px;
+    }
   }
 </style>
 </head>
@@ -294,23 +318,26 @@
 </header>
 
 <div class="container">
-  <div class="tema-select">
-    <label for="tema">Tema:</label>
-    <select id="tema" aria-label="Selecione o tema do site">
-      <option value="tema-claro" selected>Claro</option>
-      <option value="tema-escuro">Escuro</option>
-      <option value="tema-azul">Azul</option>
-    </select>
+
+  <div class="tema-select" role="radiogroup" aria-label="Selecione o tema do site">
+    <input type="radio" id="tema-claro" name="tema" value="tema-claro" />
+    <label for="tema-claro">Claro</label>
+
+    <input type="radio" id="tema-escuro" name="tema" value="tema-escuro" />
+    <label for="tema-escuro">Escuro</label>
+
+    <input type="radio" id="tema-azul" name="tema" value="tema-azul" />
+    <label for="tema-azul">Azul</label>
   </div>
 
   <section class="card">
     <h2 class="section-title">Informações Básicas</h2>
     <label for="age">1 ➜ Qual a sua idade? <span class="explanation">(Somente números, ex: 18)</span></label>
     <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" />
-    
+
     <label for="recruiter">2 ➜ Nome do seu recrutador? <span class="explanation">(Quem te indicou para entrar na família)</span></label>
     <input type="text" id="recruiter" placeholder="Ex: Fanático" />
-    
+
     <label for="preferredName">3 ➜ Como prefere ser chamado? <span class="explanation">(Seu nome ou apelido dentro da família)</span></label>
     <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
   </section>
@@ -380,27 +407,28 @@
 </footer>
 
 <script>
-  const temaSelect = document.getElementById('tema');
-  const body = document.body;
+  const radiosTema = document.querySelectorAll('input[name="tema"]');
 
-  // Salvar e carregar tema com localStorage
   function setTheme(theme) {
-    body.className = theme;
+    document.body.className = theme;
     localStorage.setItem('temaEscolhido', theme);
   }
 
-  temaSelect.addEventListener('change', () => {
-    setTheme(temaSelect.value);
+  radiosTema.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.checked) {
+        setTheme(radio.value);
+      }
+    });
   });
 
-  // Carregar tema salvo no início
-  const savedTheme = localStorage.getItem('temaEscolhido');
-  if(savedTheme) {
-    temaSelect.value = savedTheme;
-    setTheme(savedTheme);
-  } else {
-    setTheme('tema-claro');
-  }
+  // Carregar tema salvo e setar radio correto ao iniciar
+  const savedTheme = localStorage.getItem('temaEscolhido') || 'tema-claro';
+  setTheme(savedTheme);
+
+  radiosTema.forEach(radio => {
+    radio.checked = radio.value === savedTheme;
+  });
 
   function getRadioValue(name) {
     const radios = document.getElementsByName(name);
@@ -409,8 +437,7 @@
   }
 
   function buildFormattedText(data) {
-    return `𑁍ࠬܓ Formulário N.G.T : 📜
-━━━━━━━━━━━━━━━━━━
+    return `𑁍ࠬܓ Formulário N.G.T : 📜 ━━━━━━━━━━━━━━━━━━
 1 ➜ Idade: ${data.age || '___'} anos
 2 ➜ Recrutador: ${data.recruiter || '___'}
 3 ➜ Apelido: ${data.preferredName || '___'}
@@ -452,5 +479,6 @@
     });
   });
 </script>
+
 </body>
 </html>
