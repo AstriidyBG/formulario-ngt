@@ -6,307 +6,128 @@
 <title>Formulário N.G.T - Cadastro Família</title>
 <style>
   /* Reset */
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg1:#f9f9f9; --bg2:#e3eaf1; --text:#333;
+    --brand:#4285f4; --brand-2:#34a853; --warn:#ea4335; --muted:#555;
+    --card:#f8f9fa; --chip:#e7e9ec; --soft:#ddd;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
   }
 
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f9f9f9, #e3eaf1);
-    color: #333;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: var(--text);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    display: flex; flex-direction: column; align-items: center;
     padding: 20px 15px;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background 0.5s ease, color 0.5s ease;
   }
 
   body.tema-escuro {
-    background: linear-gradient(135deg, #202124, #2f3136);
-    color: #f0f0f0;
+    --bg1:#202124; --bg2:#2f3136; --text:#f0f0f0;
+    --muted:#ccc; --card:#3a3d41; --chip:#4a4d52; --soft:#3f4145;
   }
 
   body.tema-azul {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: #f0f0f0;
+    --bg1:#1e3c72; --bg2:#2a5298; --text:#f0f0f0;
+    --muted:#ccc; --card:rgba(255,255,255,0.18); --chip:rgba(255,255,255,0.25); --soft:rgba(255,255,255,0.35);
   }
 
-  header {
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 25px;
-  }
-
+  header { max-width: 680px; width: 100%; text-align: center; margin-bottom: 22px; animation: fadeInDown 0.8s ease; }
   header h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    margin-bottom: 8px;
+    font-size: 2.6rem; font-weight: 800; margin-bottom: 8px; letter-spacing: .3px;
+    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
+  header p { font-size: 1.08rem; color: var(--muted); }
 
-  header p {
-    font-size: 1.15rem;
-    color: #555;
-  }
-
-  body.tema-escuro header p,
-  body.tema-azul header p {
-    color: #ccc;
-  }
+  .progress-wrap { width: 100%; max-width: 680px; margin: 14px 0 18px; }
+  .progress-bar { width: 100%; height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
+  .progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width .3s ease; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: .9rem; color: var(--muted); margin-top: 6px; }
 
   .container {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    max-width: 600px;
-    width: 100%;
-    padding: 32px 36px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    transition: background 0.3s ease;
+    background: #fff; border-radius: 18px; box-shadow: 0 6px 22px rgba(0,0,0,.10);
+    max-width: 680px; width: 100%; padding: 26px 28px;
+    display: flex; flex-direction: column; gap: 16px; transition: background .3s ease; animation: fadeInUp .9s ease;
   }
+  body.tema-escuro .container { background: #2c2f33; }
+  body.tema-azul .container { background: rgba(255,255,255,0.12); backdrop-filter: blur(2px); }
 
-  body.tema-escuro .container {
-    background: #2c2f33;
-  }
-
-  body.tema-azul .container {
-    background: rgba(255,255,255,0.12);
-  }
-
-  .tema-select {
-    text-align: right;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
+  .tema-select { display: flex; justify-content: flex-end; gap: 10px; }
+  .tema-select input { display: none; }
   .tema-select label {
-    cursor: pointer;
-    font-weight: 600;
-    color: inherit;
-    user-select: none;
-    padding: 6px 14px;
-    border-radius: 14px;
-    background: #e7e9ec;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    border: 2.5px solid transparent;
+    cursor: pointer; font-weight: 700; font-size: .95rem;
+    padding: 7px 14px; border-radius: 999px; color: inherit; background: var(--chip);
+    border: 2px solid transparent; transition: all .25s ease;
   }
-
-  body.tema-escuro .tema-select label {
-    background: #4a4d52;
-  }
-
-  body.tema-azul .tema-select label {
-    background: rgba(255,255,255,0.25);
-  }
-
-  .tema-select input[type="radio"] {
-    display: none;
-  }
-
-  .tema-select input[type="radio"]:checked + label {
-    background-color: #4285f4;
-    color: #fff;
-    border-color: #3367d6;
-  }
-
-  h2.section-title {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: inherit;
-    border-bottom: 2.5px solid #4285f4;
-    padding-bottom: 6px;
-    margin-bottom: 12px;
-  }
+  .tema-select input:checked + label { background: var(--brand); color: #fff; border-color: #3367d6; }
 
   .card {
-    background: #f8f9fa;
-    padding: 18px 22px;
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.04);
-    transition: background 0.3s ease;
+    background: var(--card); padding: 18px 20px; border-radius: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,.05);
+    overflow: hidden; transition: transform .2s ease, background .3s ease;
   }
+  .card:hover { transform: translateY(-1px); }
 
-  body.tema-escuro .card {
-    background: #3a3d41;
-  }
+  .card-header { display:flex; align-items:center; justify-content: space-between; gap: 12px; cursor: pointer; user-select: none; }
+  .card-title { font-size: 1.2rem; font-weight: 800; display:flex; align-items:center; gap: 10px; }
+  .card-toggle { font-size: 1.2rem; opacity: .8; }
+  .card-content { margin-top: 12px; display:none; animation: fadeIn .4s ease; }
+  .card.open .card-content { display:block; }
 
-  body.tema-azul .card {
-    background: rgba(255,255,255,0.18);
-  }
-
-  label {
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: inherit;
-  }
-
-  label .explanation {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: #666;
-  }
-
-  body.tema-escuro label .explanation,
-  body.tema-azul label .explanation {
-    color: #bbb;
-  }
+  label { font-weight: 700; font-size: 1rem; color: inherit; display:block; margin-top: 10px; }
+  .hint { font-weight: 500; color: var(--muted); font-size: .9rem; }
 
   input[type=text], input[type=number], textarea {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1.5px solid #ccc;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
+    width: 100%; padding: 11px 14px; border-radius: 12px; border: 1.6px solid #ccc; background: #fff;
+    font-size: 1rem; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
   }
+  body.tema-escuro input, body.tema-escuro textarea { background: #26282c; color: inherit; border-color: #444; }
+  body.tema-azul input, body.tema-azul textarea { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.35); }
 
-  input[type=text]:focus, input[type=number]:focus, textarea:focus {
-    border-color: #4285f4;
-    outline: none;
-    background: #fff;
-  }
+  input:focus, textarea:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px rgba(66,133,244,.25); }
+  input.valid, textarea.valid { border-color: var(--brand-2); box-shadow: 0 0 0 3px rgba(52,168,83,.18); }
+  input.invalid, textarea.invalid { border-color: var(--warn); box-shadow: 0 0 0 3px rgba(234,67,53,.18); }
 
-  textarea {
-    resize: vertical;
-    min-height: 70px;
+  .radio-group { display:flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .chip { position: relative; }
+  .chip input { display:none; }
+  .chip label {
+    display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border-radius: 14px; background: var(--chip);
+    border: 2px solid transparent; cursor:pointer; transition: all .2s ease; font-weight: 700;
   }
+  .chip input:checked + label { background: var(--brand); color: #fff; border-color: #3367d6; }
 
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 6px;
-  }
-
-  .radio-group label {
-    cursor: pointer;
-    font-weight: 500;
-    background: #e7e9ec;
-    padding: 8px 14px;
-    border-radius: 12px;
-    user-select: none;
-    transition: background-color 0.2s ease;
-    border: 2.5px solid transparent;
-  }
-
-  body.tema-escuro .radio-group label {
-    background: #4a4d52;
-  }
-
-  body.tema-azul .radio-group label {
-    background: rgba(255,255,255,0.25);
-  }
-
-  .radio-group input[type=radio] {
-    display: none;
-  }
-
-  .radio-group input[type=radio]:checked + label {
-    background-color: #4285f4;
-    color: #fff;
-    border-color: #3367d6;
-  }
-
-  .btn {
-    padding: 14px 0;
-    border-radius: 14px;
-    border: none;
-    font-weight: 700;
-    font-size: 1.15rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-  }
-
-  .btn-primary {
-    background: #4285f4;
-    color: #fff;
-  }
-
-  .btn-primary:hover {
-    background: #3367d6;
-    box-shadow: 0 6px 18px rgba(51, 103, 214, 0.45);
-  }
-
-  .btn-copy {
-    background: #34a853;
-    color: #fff;
-    display: none;
-    margin-top: 12px;
-    box-shadow: 0 4px 12px rgba(52, 168, 83, 0.35);
-  }
-
-  .btn-copy:hover {
-    background: #2c8e46;
-    box-shadow: 0 6px 18px rgba(44, 142, 70, 0.5);
-  }
-
-  .btn:active {
-    transform: scale(0.97);
-  }
+  .btn { padding: 14px 0; border-radius: 14px; border: none; font-weight: 800; font-size: 1.1rem; cursor:pointer; transition: transform .08s ease, filter .2s ease; }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--brand); color:#fff; box-shadow: 0 6px 18px rgba(66,133,244,.35); }
+  .btn-primary:hover { filter: brightness(.96); }
+  .btn-copy { background: var(--brand-2); color:#fff; display:none; margin-top: 10px; box-shadow: 0 6px 18px rgba(52,168,83,.35); }
 
   pre.result {
-    margin-top: 18px;
-    background: #eef2f5;
-    padding: 18px 22px;
-    border-radius: 14px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1rem;
-    white-space: pre-wrap;
-    display: none;
-    border: 1px solid #ccc;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+    margin-top: 14px; background: #eef2f5; padding: 16px 18px; border-radius: 14px;
+    font-family: "Courier New", monospace; font-size: .98rem; white-space: pre-wrap; display:none; border: 1px solid #cfd6dd;
   }
+  body.tema-escuro pre.result { background:#23272a; border-color:#2b2f33; }
+  body.tema-azul pre.result { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.25); }
 
-  body.tema-escuro pre.result {
-    background: #23272a;
-    border: none;
-    box-shadow: none;
-  }
+  footer { margin-top: 28px; padding: 10px 0; font-size: .9rem; color: var(--muted); user-select: none; text-align:center; max-width:680px; width:100%; }
 
-  footer {
-    margin-top: 40px;
-    padding: 14px 0;
-    font-size: 0.9rem;
-    color: #777;
-    user-select: none;
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-  }
-
-  body.tema-escuro footer,
-  body.tema-azul footer {
-    color: #aaa;
-  }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes fadeInDown { from{opacity:0; transform:translateY(-12px)} to{opacity:1; transform:translateY(0)} }
+  @keyframes fadeInUp { from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)} }
 
   @media (max-width: 640px) {
-    .container {
-      padding: 24px 20px;
-    }
-
-    header h1 {
-      font-size: 2.2rem;
-    }
-
-    .btn {
-      font-size: 1.05rem;
-      padding: 12px 0;
-    }
-
-    .tema-select {
-      justify-content: center;
-      gap: 8px;
-    }
+    header h1 { font-size: 2.1rem; }
+    .container { padding: 22px 18px; }
+    .btn { font-size: 1rem; padding: 12px 0; }
+    .tema-select { justify-content: center; gap: 8px; }
   }
 </style>
 </head>
@@ -314,11 +135,22 @@
 
 <header>
   <h1>Formulário N.G.T</h1>
-  <p>Cadastro oficial para novos membros da família N.G.T. Preencha com atenção e finalize para ver o resultado.</p>
+  <p>Cadastro oficial para novos membros da família N.G.T. Preencha e veja o preview em tempo real.</p>
 </header>
 
-<div class="container">
+<div class="progress-wrap" aria-hidden="false">
+  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="progress" id="progress"></div>
+  </div>
+  <div class="progress-meta">
+    <span id="progressLabel">0% completo</span>
+    <span id="progressSteps">0 de 6 obrigatórios</span>
+  </div>
+</div>
 
+<div class="container" id="container">
+
+  <!-- Temas -->
   <div class="tema-select" role="radiogroup" aria-label="Selecione o tema do site">
     <input type="radio" id="tema-claro" name="tema" value="tema-claro" />
     <label for="tema-claro">Claro</label>
@@ -330,70 +162,102 @@
     <label for="tema-azul">Azul</label>
   </div>
 
-  <section class="card">
-    <h2 class="section-title">Informações Básicas</h2>
-    <label for="age">1 ➜ Qual a sua idade? <span class="explanation">(Somente números, ex: 18)</span></label>
-    <input type="number" id="age" min="1" max="120" placeholder="Ex: 18" />
-
-    <label for="recruiter">2 ➜ Nome do seu recrutador? <span class="explanation">(Quem te indicou para entrar na família)</span></label>
-    <input type="text" id="recruiter" placeholder="Ex: Fanático" />
-
-    <label for="preferredName">3 ➜ Como prefere ser chamado? <span class="explanation">(Seu nome ou apelido dentro da família)</span></label>
-    <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
-  </section>
-
-  <section class="card">
-    <h2 class="section-title">Função e Atividade</h2>
-    <label>4 ➜ Escolha sua função na família</label>
-    <div class="radio-group" role="radiogroup" aria-labelledby="role-label">
-      <input type="radio" id="role-defensor" name="role" value="🛡️ Defensor" />
-      <label for="role-defensor">🛡️ Defensor</label>
-
-      <input type="radio" id="role-recrutador" name="role" value="🎯 Recrutador" />
-      <label for="role-recrutador">🎯 Recrutador</label>
-
-      <input type="radio" id="role-conselheiro" name="role" value="🧠 Conselheiro" />
-      <label for="role-conselheiro">🧠 Conselheiro</label>
-
-      <input type="radio" id="role-carisma" name="role" value="🧲 Carisma" />
-      <label for="role-carisma">🧲 Carisma</label>
+  <!-- Informações Básicas -->
+  <section class="card open">
+    <div class="card-header" data-toggle>
+      <div class="card-title">🧾 Informações Básicas</div>
+      <div class="card-toggle">➖</div>
     </div>
+    <div class="card-content">
+      <label for="age">🧑‍💼 1 — Qual a sua idade? <span class="hint">(apenas números, 10–120)</span></label>
+      <input type="number" id="age" min="10" max="120" placeholder="Ex: 18" />
 
-    <label>5 ➜ Nível de atividade</label>
-    <div class="radio-group" role="radiogroup" aria-labelledby="activityLevel-label">
-      <input type="radio" id="activity-baixo" name="activityLevel" value="Baixo" />
-      <label for="activity-baixo">Baixo</label>
+      <label for="recruiter">🧲 2 — Nome do seu recrutador? <span class="hint">(quem te indicou)</span></label>
+      <input type="text" id="recruiter" placeholder="Ex: Fanático" />
 
-      <input type="radio" id="activity-medio" name="activityLevel" value="Médio" />
-      <label for="activity-medio">Médio</label>
-
-      <input type="radio" id="activity-alto" name="activityLevel" value="Alto" />
-      <label for="activity-alto">Alto</label>
-    </div>
-
-    <label>6 ➜ Qual seu horário mais ativo?</label>
-    <div class="radio-group" role="radiogroup" aria-labelledby="activeHours-label">
-      <input type="radio" id="hours-manha" name="activeHours" value="Manhã" />
-      <label for="hours-manha">Manhã</label>
-
-      <input type="radio" id="hours-tarde" name="activeHours" value="Tarde" />
-      <label for="hours-tarde">Tarde</label>
-
-      <input type="radio" id="hours-noite" name="activeHours" value="Noite" />
-      <label for="hours-noite">Noite</label>
-
-      <input type="radio" id="hours-madrugada" name="activeHours" value="Madrugada" />
-      <label for="hours-madrugada">Madrugada</label>
+      <label for="preferredName">🏷️ 3 — Como prefere ser chamado? <span class="hint">(apelido na família)</span></label>
+      <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
     </div>
   </section>
 
-  <section class="card">
-    <h2 class="section-title">Experiências & Observações</h2>
-    <label for="previousFamily">7 ➜ Já participou de outra família?</label>
-    <textarea id="previousFamily" rows="3" placeholder="Escreva aqui..."></textarea>
+  <!-- Função e Atividade -->
+  <section class="card open">
+    <div class="card-header" data-toggle>
+      <div class="card-title">🛠️ Função e Atividade</div>
+      <div class="card-toggle">➖</div>
+    </div>
+    <div class="card-content">
+      <label>🎯 4 — Escolha sua função</label>
+      <div class="radio-group" role="radiogroup" aria-label="Função">
+        <div class="chip">
+          <input type="radio" id="role-defensor" name="role" value="🛡️ Defensor" />
+          <label for="role-defensor">🛡️ Defensor</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="role-recrutador" name="role" value="🎯 Recrutador" />
+          <label for="role-recrutador">🎯 Recrutador</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="role-conselheiro" name="role" value="🧠 Conselheiro" />
+          <label for="role-conselheiro">🧠 Conselheiro</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="role-carisma" name="role" value="🧲 Carisma" />
+          <label for="role-carisma">🧲 Carisma</label>
+        </div>
+      </div>
 
-    <label for="notes" style="margin-top: 12px;">8 ➜ Algo mais que queira acrescentar?</label>
-    <textarea id="notes" rows="3" placeholder="Escreva aqui..."></textarea>
+      <label>📊 5 — Nível de atividade</label>
+      <div class="radio-group" role="radiogroup" aria-label="Atividade">
+        <div class="chip">
+          <input type="radio" id="activity-baixo" name="activityLevel" value="Baixo" />
+          <label for="activity-baixo">Baixo</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="activity-medio" name="activityLevel" value="Médio" />
+          <label for="activity-medio">Médio</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="activity-alto" name="activityLevel" value="Alto" />
+          <label for="activity-alto">Alto</label>
+        </div>
+      </div>
+
+      <label>⏰ 6 — Seu horário mais ativo</label>
+      <div class="radio-group" role="radiogroup" aria-label="Horário ativo">
+        <div class="chip">
+          <input type="radio" id="hours-manha" name="activeHours" value="Manhã" />
+          <label for="hours-manha">Manhã</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="hours-tarde" name="activeHours" value="Tarde" />
+          <label for="hours-tarde">Tarde</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="hours-noite" name="activeHours" value="Noite" />
+          <label for="hours-noite">Noite</label>
+        </div>
+        <div class="chip">
+          <input type="radio" id="hours-madrugada" name="activeHours" value="Madrugada" />
+          <label for="hours-madrugada">Madrugada</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiências -->
+  <section class="card">
+    <div class="card-header" data-toggle>
+      <div class="card-title">🧭 Experiências & Observações</div>
+      <div class="card-toggle">➕</div>
+    </div>
+    <div class="card-content">
+      <label for="previousFamily">👥 7 — Já participou de outra família?</label>
+      <textarea id="previousFamily" rows="3" placeholder="Escreva aqui..."></textarea>
+
+      <label for="notes">📝 8 — Algo mais que queira acrescentar?</label>
+      <textarea id="notes" rows="3" placeholder="Escreva aqui..."></textarea>
+    </div>
   </section>
 
   <button id="finalizeBtn" class="btn btn-primary" type="button">Finalizar e mostrar resultado</button>
@@ -402,40 +266,26 @@
   <pre id="resultText" class="result" aria-live="polite" aria-atomic="true"></pre>
 </div>
 
-<footer>
-  © 2025 Família N.G.T. Todos os direitos reservados.
-</footer>
+<footer>© 2025 Família N.G.T. Todos os direitos reservados.</footer>
 
 <script>
+  // ------ Tema com persistência ------
   const radiosTema = document.querySelectorAll('input[name="tema"]');
-
   function setTheme(theme) {
     document.body.className = theme;
     localStorage.setItem('temaEscolhido', theme);
   }
-
-  radiosTema.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.checked) {
-        setTheme(radio.value);
-      }
-    });
-  });
-
-  // Carregar tema salvo e setar radio correto ao iniciar
   const savedTheme = localStorage.getItem('temaEscolhido') || 'tema-claro';
   setTheme(savedTheme);
+  radiosTema.forEach(r => r.checked = r.value === savedTheme);
+  radiosTema.forEach(radio => radio.addEventListener('change', () => { if (radio.checked) setTheme(radio.value); }));
 
-  radiosTema.forEach(radio => {
-    radio.checked = radio.value === savedTheme;
-  });
-
+  // ------ Helpers ------
   function getRadioValue(name) {
     const radios = document.getElementsByName(name);
     for (let r of radios) if (r.checked) return r.value;
     return '';
   }
-
   function buildFormattedText(data) {
     return `𑁍ࠬܓ Formulário N.G.T : 📜 ━━━━━━━━━━━━━━━━━━
 1 ➜ Idade: ${data.age || '___'} anos
@@ -450,35 +300,105 @@
 (Enviado via formulário N.G.T)`;
   }
 
-  const finalizeBtn = document.getElementById('finalizeBtn');
-  const copyBtn = document.getElementById('copyBtn');
+  // ------ Real-time Preview + Validação ------
+  const fields = {
+    age: document.getElementById('age'),
+    recruiter: document.getElementById('recruiter'),
+    preferredName: document.getElementById('preferredName'),
+    previousFamily: document.getElementById('previousFamily'),
+    notes: document.getElementById('notes'),
+  };
+  const radios = ['role','activityLevel','activeHours'];
   const resultText = document.getElementById('resultText');
+  const copyBtn = document.getElementById('copyBtn');
 
-  finalizeBtn.addEventListener('click', () => {
-    const data = {
-      age: document.getElementById('age').value.trim(),
-      recruiter: document.getElementById('recruiter').value.trim(),
-      preferredName: document.getElementById('preferredName').value.trim(),
+  function readData() {
+    return {
+      age: fields.age.value.trim(),
+      recruiter: fields.recruiter.value.trim(),
+      preferredName: fields.preferredName.value.trim(),
       role: getRadioValue('role'),
       activityLevel: getRadioValue('activityLevel'),
       activeHours: getRadioValue('activeHours'),
-      previousFamily: document.getElementById('previousFamily').value.trim(),
-      notes: document.getElementById('notes').value.trim(),
+      previousFamily: fields.previousFamily.value.trim(),
+      notes: fields.notes.value.trim(),
     };
+  }
 
+  function validate() {
+    // Idade 10-120
+    const ageVal = fields.age.value.trim();
+    toggleValidity(fields.age, ageVal && +ageVal >= 10 && +ageVal <= 120);
+
+    // Texto minimo 2 chars
+    toggleValidity(fields.recruiter, fields.recruiter.value.trim().length >= 2);
+    toggleValidity(fields.preferredName, fields.preferredName.value.trim().length >= 2);
+  }
+
+  function toggleValidity(el, ok) {
+    el.classList.remove('valid','invalid');
+    if (!el.value.trim()) return; // não marca vazio
+    el.classList.add(ok ? 'valid' : 'invalid');
+  }
+
+  function updatePreview() {
+    validate();
+    const data = readData();
     resultText.textContent = buildFormattedText(data);
     resultText.style.display = 'block';
     copyBtn.style.display = 'inline-block';
-    copyBtn.textContent = "📋 Copiar formulário";
-  });
+    updateProgress();
+  }
 
+  Object.values(fields).forEach(el => el.addEventListener('input', updatePreview));
+  radios.forEach(name => document.getElementsByName(name).forEach(r => r.addEventListener('change', updatePreview)));
+
+  // ------ Botões ------
+  document.getElementById('finalizeBtn').addEventListener('click', updatePreview);
   copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(resultText.textContent).then(() => {
+      const old = copyBtn.textContent;
       copyBtn.textContent = '✅ Copiado!';
-      setTimeout(() => copyBtn.textContent = "📋 Copiar formulário", 2000);
+      setTimeout(() => copyBtn.textContent = old, 1800);
     });
   });
+
+  // ------ Barra de Progresso (6 obrigatórios) ------
+  const progressEl = document.getElementById('progress');
+  const progressLabel = document.getElementById('progressLabel');
+  const progressSteps = document.getElementById('progressSteps');
+  const requiredChecks = () => ([
+    fields.age.value.trim() && +fields.age.value >= 10 && +fields.age.value <= 120,
+    fields.recruiter.value.trim().length >= 2,
+    fields.preferredName.value.trim().length >= 2,
+    !!getRadioValue('role'),
+    !!getRadioValue('activityLevel'),
+    !!getRadioValue('activeHours'),
+  ]);
+  function updateProgress() {
+    const checks = requiredChecks();
+    const done = checks.filter(Boolean).length;
+    const pct = Math.round((done/6)*100);
+    progressEl.style.width = pct + '%';
+    progressEl.parentElement.setAttribute('aria-valuenow', String(pct));
+    progressLabel.textContent = pct + '% completo';
+    progressSteps.textContent = `${done} de 6 obrigatórios`;
+  }
+  updateProgress();
+
+  // ------ Cards expansíveis ------
+  document.querySelectorAll('[data-toggle]').forEach(h => {
+    h.addEventListener('click', () => {
+      const card = h.closest('.card');
+      const isOpen = card.classList.toggle('open');
+      const tog = h.querySelector('.card-toggle');
+      if (tog) tog.textContent = isOpen ? '➖' : '➕';
+    });
+  });
+
+  // ------ Inicia preview vazio para mostrar bloco de resultado ------
+  updatePreview();
 </script>
 
 </body>
-  </html>
+</html>
