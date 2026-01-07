@@ -1,404 +1,569 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Formulário P.K.B - Cadastro Família</title>
-<style>
-  /* Reset */
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WPanel Download</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
 
-  :root {
-    --bg1:#f9f9f9; --bg2:#e3eaf1; --text:#333;
-    --brand:#4285f4; --brand-2:#34a853; --warn:#ea4335; --muted:#555;
-    --card:#f8f9fa; --chip:#e7e9ec; --soft:#ddd;
-  }
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-out forwards',
+              'slide-up': 'slideUp 0.6s ease-out forwards',
+              'scale-in': 'scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+              'blink': 'blink 1s step-end infinite',
+              'spin-reverse': 'spin 1s linear infinite reverse',
+              'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.9)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              blink: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0' },
+              }
+            }
+          }
+        }
+      }
+    </script>
 
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-  }
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            perspective: 1000px; /* Essential for 3D tilt */
+        }
 
-  body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--bg1), var(--bg2));
-    color: var(--text);
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 20px 15px;
-    transition: background 0.5s ease, color 0.5s ease;
-  }
+        /* 3D Tilt Card Base Styles */
+        #tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
 
-  body.tema-escuro {
-    --bg1:#202124; --bg2:#2f3136; --text:#f0f0f0;
-    --muted:#ccc; --card:#3a3d41; --chip:#4a4d52; --soft:#3f4145;
-  }
+        /* Typewriter Cursor */
+        .cursor::after {
+            content: '▋';
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+            opacity: 0.6;
+        }
 
-  body.tema-azul {
-    --bg1:#1e3c72; --bg2:#2a5298; --text:#f0f0f0;
-    --muted:#ccc; --card:rgba(255,255,255,0.18); --chip:rgba(255,255,255,0.25); --soft:rgba(255,255,255,0.35);
-  }
-
-  header { max-width: 680px; width: 100%; text-align: center; margin-bottom: 22px; animation: fadeInDown 0.8s ease; }
-  header h1 {
-    font-size: 2.6rem; font-weight: 800; margin-bottom: 8px; letter-spacing: .3px;
-    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  header p { font-size: 1.08rem; color: var(--muted); }
-
-  .progress-wrap { width: 100%; max-width: 680px; margin: 14px 0 18px; }
-  .progress-bar { width: 100%; height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
-  .progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--brand), var(--brand-2)); transition: width .3s ease; }
-  .progress-meta { display: flex; justify-content: space-between; font-size: .9rem; color: var(--muted); margin-top: 6px; }
-
-  .container {
-    background: #fff; border-radius: 18px; box-shadow: 0 6px 22px rgba(0,0,0,.10);
-    max-width: 680px; width: 100%; padding: 26px 28px;
-    display: flex; flex-direction: column; gap: 16px; transition: background .3s ease; animation: fadeInUp .9s ease;
-  }
-  body.tema-escuro .container { background: #2c2f33; }
-  body.tema-azul .container { background: rgba(255,255,255,0.12); backdrop-filter: blur(2px); }
-
-  .tema-select { display: flex; justify-content: flex-end; gap: 10px; }
-  .tema-select input { display: none; }
-  .tema-select label {
-    cursor: pointer; font-weight: 700; font-size: .95rem;
-    padding: 7px 14px; border-radius: 999px; color: inherit; background: var(--chip);
-    border: 2px solid transparent; transition: all .25s ease;
-  }
-  .tema-select input:checked + label { background: var(--brand); color: #fff; border-color: #3367d6; }
-
-  .card {
-    background: var(--card); padding: 18px 20px; border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,.05);
-    overflow: hidden; transition: transform .2s ease, background .3s ease;
-  }
-  .card:hover { transform: translateY(-1px); }
-
-  .card-header { display:flex; align-items:center; justify-content: space-between; gap: 12px; cursor: pointer; user-select: none; }
-  .card-title { font-size: 1.2rem; font-weight: 800; display:flex; align-items:center; gap: 10px; }
-  .card-toggle { font-size: 1.2rem; opacity: .8; }
-  .card-content { margin-top: 12px; display:none; animation: fadeIn .4s ease; }
-  .card.open .card-content { display:block; }
-
-  label { font-weight: 700; font-size: 1rem; color: inherit; display:block; margin-top: 10px; }
-  .hint { font-weight: 500; color: var(--muted); font-size: .9rem; }
-
-  input[type=text], input[type=number], textarea {
-    width: 100%; padding: 11px 14px; border-radius: 12px; border: 1.6px solid #ccc; background: #fff;
-    font-size: 1rem; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
-  }
-  body.tema-escuro input, body.tema-escuro textarea { background: #26282c; color: inherit; border-color: #444; }
-  body.tema-azul input, body.tema-azul textarea { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.35); }
-
-  input:focus, textarea:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px rgba(66,133,244,.25); }
-  input.valid, textarea.valid { border-color: var(--brand-2); box-shadow: 0 0 0 3px rgba(52,168,83,.18); }
-  input.invalid, textarea.invalid { border-color: var(--warn); box-shadow: 0 0 0 3px rgba(234,67,53,.18); }
-
-  .radio-group { display:flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
-  .chip { position: relative; }
-  .chip input { display:none; }
-  .chip label {
-    display:inline-flex; align-items:center; gap:8px; padding:9px 14px; border-radius: 14px; background: var(--chip);
-    border: 2px solid transparent; cursor:pointer; transition: all .2s ease; font-weight: 700;
-  }
-  .chip input:checked + label { background: var(--brand); color: #fff; border-color: #3367d6; }
-
-  .btn { padding: 14px 0; border-radius: 14px; border: none; font-weight: 800; font-size: 1.1rem; cursor:pointer; transition: transform .08s ease, filter .2s ease; }
-  .btn:active { transform: scale(.98); }
-  .btn-primary { background: var(--brand); color:#fff; box-shadow: 0 6px 18px rgba(66,133,244,.35); }
-  .btn-primary:hover { filter: brightness(.96); }
-  .btn-copy { background: var(--brand-2); color:#fff; display:none; margin-top: 10px; box-shadow: 0 6px 18px rgba(52,168,83,.35); }
-
-  pre.result {
-    margin-top: 14px; background: #eef2f5; padding: 16px 18px; border-radius: 14px;
-    font-family: "Courier New", monospace; font-size: .98rem; white-space: pre-wrap; display:none; border: 1px solid #cfd6dd;
-  }
-  body.tema-escuro pre.result { background:#23272a; border-color:#2b2f33; }
-  body.tema-azul pre.result { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.25); }
-
-  footer { margin-top: 28px; padding: 10px 0; font-size: .9rem; color: var(--muted); user-select: none; text-align:center; max-width:680px; width:100%; }
-
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  @keyframes fadeInDown { from{opacity:0; transform:translateY(-12px)} to{opacity:1; transform:translateY(0)} }
-  @keyframes fadeInUp { from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)} }
-
-  @media (max-width: 640px) {
-    header h1 { font-size: 2.1rem; }
-    .container { padding: 22px 18px; }
-    .btn { font-size: 1rem; padding: 12px 0; }
-    .tema-select { justify-content: center; gap: 8px; }
-  }
-</style>
+        /* Custom Scrollbar for logs if needed */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+        }
+    </style>
 </head>
-<body class="tema-claro">
+<body class="w-screen h-screen flex flex-col items-center justify-center text-black selection:bg-black selection:text-white">
 
-<header>
-  <h1>Formulário P.K.B</h1>
-  <p>Cadastro oficial para novos membros da família P.K.B. Preencha e veja o preview em tempo real.</p>
-</header>
+    <!-- 1. BACKGROUND CANVAS -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-50"></canvas>
 
-<div class="progress-wrap" aria-hidden="false">
-  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-    <div class="progress" id="progress"></div>
-  </div>
-  <div class="progress-meta">
-    <span id="progressLabel">0% completo</span>
-    <span id="progressSteps">0 de 6 obrigatórios</span>
-  </div>
-</div>
+    <!-- 2. AUDIO PLAYER (Hybrid System) -->
+    <!-- Background Music -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="https://cs1.mp3.pm/download/174076159/Q2VqcTNqU1BmUWNiOFJIWGNNQllzYkd0NWt0aS80YWh6YkkwOGVBc2ZuSlMvZTR1TmdtNTdpbE4vc0cwWE5BcHFRTFlBakdmam9laDhsanNIa2lpcGhLVDZWRFZRbmJYUlRmMXYvd1dhcDYrR3FuQXAwY2hXY2tJaFF0eXMzdWM/FXGURU_-_Drama_piano_(mp3.pm).mp3" type="audio/mp3">
+    </audio>
 
-<div class="container" id="container">
+    <!-- 3. MAIN CONTENT CONTAINER -->
+    <main class="relative z-10 w-full h-full flex flex-col items-center justify-center p-6">
+        
+        <!-- 3D CARD WRAPPER -->
+        <div id="tilt-card" class="relative w-full max-w-2xl min-h-[480px] flex flex-col items-center justify-center">
+            
+            <!-- Glass Panel Background -->
+            <div class="absolute inset-0 bg-white/60 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl -z-10"></div>
+            
+            <!-- Decorative Accents (Original Design) -->
+            <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-black rounded-tl-2xl -z-10 translate-x-[-1px] translate-y-[-1px]"></div>
+            <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-black rounded-br-2xl -z-10 translate-x-[1px] translate-y-[1px]"></div>
 
-  <!-- Temas -->
-  <div class="tema-select" role="radiogroup" aria-label="Selecione o tema do site">
-    <input type="radio" id="tema-claro" name="tema" value="tema-claro" />
-    <label for="tema-claro">Claro</label>
-
-    <input type="radio" id="tema-escuro" name="tema" value="tema-escuro" />
-    <label for="tema-escuro">Escuro</label>
-
-    <input type="radio" id="tema-azul" name="tema" value="tema-azul" />
-    <label for="tema-azul">Azul</label>
-  </div>
-
-  <!-- Informações Básicas -->
-  <section class="card open">
-    <div class="card-header" data-toggle>
-      <div class="card-title">🧾 Informações Básicas</div>
-      <div class="card-toggle">➖</div>
-    </div>
-    <div class="card-content">
-      <label for="age">🧑‍💼 1 — Qual a sua idade? <span class="hint">(apenas números, 10–120)</span></label>
-      <input type="number" id="age" min="10" max="120" placeholder="Ex: 18" />
-
-      <label for="recruiter">🧲 2 — Nome do seu recrutador? <span class="hint">(quem te indicou)</span></label>
-      <input type="text" id="recruiter" placeholder="Ex: Fanático" />
-
-      <label for="preferredName">🏷️ 3 — Como prefere ser chamado? <span class="hint">(apelido na família)</span></label>
-      <input type="text" id="preferredName" placeholder="Ex: Gata Noturna" />
-    </div>
-  </section>
-
-  <!-- Função e Atividade -->
-  <section class="card open">
-    <div class="card-header" data-toggle>
-      <div class="card-title">🛠️ Função e Atividade</div>
-      <div class="card-toggle">➖</div>
-    </div>
-    <div class="card-content">
-      <label>🎯 4 — Escolha sua função</label>
-      <div class="radio-group" role="radiogroup" aria-label="Função">
-        <div class="chip">
-          <input type="radio" id="role-defensor" name="role" value="🛡️ Defensor" />
-          <label for="role-defensor">🛡️ Defensor</label>
+            <!-- DYNAMIC CONTENT AREA -->
+            <div id="app-content" class="w-full flex flex-col items-center justify-center p-8 md:p-12">
+                <!-- Content injected via JavaScript -->
+            </div>
         </div>
-        <div class="chip">
-          <input type="radio" id="role-recrutador" name="role" value="🎯 Recrutador" />
-          <label for="role-recrutador">🎯 Recrutador</label>
+
+        <!-- 4. MAZIKEEN CREDITS (Fixed Bottom) -->
+        <div class="absolute bottom-10 animate-slide-up flex flex-col items-center gap-2 group cursor-default z-20">
+            <div class="h-8 w-[1px] bg-black/20 group-hover:h-12 transition-all duration-500"></div>
+            <div class="px-6 py-2 bg-black text-white rounded-full font-bold text-xs tracking-widest shadow-2xl hover:scale-110 transition-transform duration-300 border border-black/20 ring-4 ring-black/5">
+               WEBSITE CRIADO POR <span class="text-zinc-300">MAZIKEEN</span>
+            </div>
         </div>
-        <div class="chip">
-          <input type="radio" id="role-conselheiro" name="role" value="🧠 Conselheiro" />
-          <label for="role-conselheiro">🧠 Conselheiro</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="role-carisma" name="role" value="🧲 Carisma" />
-          <label for="role-carisma">🧲 Carisma</label>
-        </div>
-      </div>
 
-      <label>📊 5 — Nível de atividade</label>
-      <div class="radio-group" role="radiogroup" aria-label="Atividade">
-        <div class="chip">
-          <input type="radio" id="activity-baixo" name="activityLevel" value="Baixo" />
-          <label for="activity-baixo">Baixo</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="activity-medio" name="activityLevel" value="Médio" />
-          <label for="activity-medio">Médio</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="activity-alto" name="activityLevel" value="Alto" />
-          <label for="activity-alto">Alto</label>
-        </div>
-      </div>
+        <!-- 5. SOUND TOGGLE (Fixed Bottom Right) -->
+        <button id="sound-btn" onclick="toggleAudio()" class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white/80 backdrop-blur-md border border-zinc-200 shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 text-black">
+            <!-- Muted Icon (Default) -->
+            <svg id="icon-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6 4.75-4.75a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.75-4.75H4.875a.75.75 0 0 1-.75-.75V8.25a.75.75 0 0 1 .75-.75h2.25Z" />
+            </svg>
 
-      <label>⏰ 6 — Seu horário mais ativo</label>
-      <div class="radio-group" role="radiogroup" aria-label="Horário ativo">
-        <div class="chip">
-          <input type="radio" id="hours-manha" name="activeHours" value="Manhã" />
-          <label for="hours-manha">Manhã</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="hours-tarde" name="activeHours" value="Tarde" />
-          <label for="hours-tarde">Tarde</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="hours-noite" name="activeHours" value="Noite" />
-          <label for="hours-noite">Noite</label>
-        </div>
-        <div class="chip">
-          <input type="radio" id="hours-madrugada" name="activeHours" value="Madrugada" />
-          <label for="hours-madrugada">Madrugada</label>
-        </div>
-      </div>
-    </div>
-  </section>
+            <!-- Playing Animation -->
+            <div id="icon-playing" class="hidden flex gap-0.5 items-end justify-center w-5 h-5 pb-1">
+                <div class="w-1 bg-black animate-[pulse_0.8s_ease-in-out_infinite] h-2"></div>
+                <div class="w-1 bg-black animate-[pulse_1.2s_ease-in-out_infinite] h-4"></div>
+                <div class="w-1 bg-black animate-[pulse_0.6s_ease-in-out_infinite] h-3"></div>
+            </div>
+        </button>
+    </main>
 
-  <!-- Experiências -->
-  <section class="card">
-    <div class="card-header" data-toggle>
-      <div class="card-title">🧭 Experiências & Observações</div>
-      <div class="card-toggle">➕</div>
-    </div>
-    <div class="card-content">
-      <label for="previousFamily">👥 7 — Já participou de outra família?</label>
-      <textarea id="previousFamily" rows="3" placeholder="Escreva aqui..."></textarea>
+    <!-- LOGIC SCRIPT -->
+    <script>
+        // --- 1. CONFIGURATION ---
+        const CONFIG = {
+            version: '2.4.0',
+            bootMessages: [
+                '[BOOT] INITIALIZING VERIFICATION...',
+                '[AUTH] CHECKING ADMIN PRIVILEGES...',
+                '[SEC] Aegis Sentinel Monitoring.',
+                '[SCAN] User profile under analysis...',
+                '[SYS] Permission matrix loaded.',
+                '[NET] Identity validation in progress...',
+                '[STATUS] No interference detected.',
+                '[READY] Awaiting authorization...'
+            ]
+        };
 
-      <label for="notes">📝 8 — Algo mais que queira acrescentar?</label>
-      <textarea id="notes" rows="3" placeholder="Escreva aqui..."></textarea>
-    </div>
-  </section>
+        let state = {
+            view: 'welcome', // welcome, loading, terminal, download
+            isMuted: true,
+            terminalIndex: 0
+        };
 
-  <button id="finalizeBtn" class="btn btn-primary" type="button">Finalizar e mostrar resultado</button>
-  <button id="copyBtn" class="btn btn-copy" type="button">📋 Copiar formulário</button>
+        // --- 2. AUDIO SYNTHESIS ENGINE (NEW SOUNDS) ---
+        // Creates sounds programmatically so we don't rely on external mp3 files for SFX
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTone(freq, type = 'sine', duration = 0.1, volume = 0.05) {
+            if(state.isMuted) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
 
-  <pre id="resultText" class="result" aria-live="polite" aria-atomic="true"></pre>
-</div>
+        function playTypingSound() {
+            // Mechanical keyboard click sound simulation
+            const freq = 600 + Math.random() * 200;
+            playTone(freq, 'triangle', 0.05, 0.03);
+        }
 
-<footer>© 2025 Família N.G.T. Todos os direitos reservados.</footer>
+        function playSuccessSound() {
+            // "Access Granted" chime
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            playTone(400, 'sine', 0.1, 0.1);
+            setTimeout(() => playTone(600, 'sine', 0.1, 0.1), 100);
+            setTimeout(() => playTone(1000, 'square', 0.4, 0.1), 200);
+        }
+        
+        function playClickSound() {
+             playTone(800, 'sine', 0.05, 0.02);
+        }
 
-<script>
-  // ------ Tema com persistência ------
-  const radiosTema = document.querySelectorAll('input[name="tema"]');
-  function setTheme(theme) {
-    document.body.className = theme;
-    localStorage.setItem('temaEscolhido', theme);
-  }
-  const savedTheme = localStorage.getItem('temaEscolhido') || 'tema-claro';
-  setTheme(savedTheme);
-  radiosTema.forEach(r => r.checked = r.value === savedTheme);
-  radiosTema.forEach(radio => radio.addEventListener('change', () => { if (radio.checked) setTheme(radio.value); }));
+        // --- 3. RENDER FUNCTIONS ---
+        const contentDiv = document.getElementById('app-content');
 
-  // ------ Helpers ------
-  function getRadioValue(name) {
-    const radios = document.getElementsByName(name);
-    for (let r of radios) if (r.checked) return r.value;
-    return '';
-  }
-  function buildFormattedText(data) {
-    return `𑁍ࠬܓ Formulário P.K.B : 📜 ━━━━━━━━━━━━━━━━━━
-1 ➜ Idade: ${data.age || '___'} anos
-2 ➜ Recrutador: ${data.recruiter || '___'}
-3 ➜ Apelido: ${data.preferredName || '___'}
-4 ➜ Função: ${data.role || '___'}
-5 ➜ Atividade: ${data.activityLevel || '___'}
-6 ➜ Horário: ${data.activeHours || '___'}
-7 ➜ Outra família?: ${data.previousFamily || '___'}
-8 ➜ Obs: ${data.notes || '___'}
-━━━━━━━━━━━━━━━━━━
-(Enviado via formulário P.K.B)`;
-  }
+        function render() {
+            // Simple fade effect between views
+            contentDiv.style.opacity = 0;
+            setTimeout(() => {
+                contentDiv.style.opacity = 1;
+                
+                if (state.view === 'welcome') {
+                    contentDiv.innerHTML = `
+                        <div class="flex flex-col items-center text-center animate-fade-in space-y-8 transform translate-z-10 w-full">
+                            <div class="space-y-4 w-full">
+                               <div class="flex flex-col items-center gap-2 mb-4">
+                                  <div class="inline-flex items-center gap-2 px-4 py-1.5 border border-black/10 rounded-full text-[10px] tracking-[0.2em] text-zinc-500 uppercase bg-white/80 shadow-sm">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></span>
+                                    System Owner: PhantomWayfex
+                                  </div>
+                               </div>
 
-  // ------ Real-time Preview + Validação ------
-  const fields = {
-    age: document.getElementById('age'),
-    recruiter: document.getElementById('recruiter'),
-    preferredName: document.getElementById('preferredName'),
-    previousFamily: document.getElementById('previousFamily'),
-    notes: document.getElementById('notes'),
-  };
-  const radios = ['role','activityLevel','activeHours'];
-  const resultText = document.getElementById('resultText');
-  const copyBtn = document.getElementById('copyBtn');
+                              <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-black drop-shadow-sm scale-100 hover:scale-105 transition-transform duration-500">
+                                WPANEL
+                              </h1>
+                              <p class="text-zinc-600 text-sm md:text-base tracking-widest uppercase mt-2 border-t border-zinc-200 pt-4 max-w-[300px] mx-auto">
+                                The most advanced panel
+                              </p>
+                            </div>
 
-  function readData() {
-    return {
-      age: fields.age.value.trim(),
-      recruiter: fields.recruiter.value.trim(),
-      preferredName: fields.preferredName.value.trim(),
-      role: getRadioValue('role'),
-      activityLevel: getRadioValue('activityLevel'),
-      activeHours: getRadioValue('activeHours'),
-      previousFamily: fields.previousFamily.value.trim(),
-      notes: fields.notes.value.trim(),
-    };
-  }
+                            <div class="pt-8">
+                              <button onclick="startDownloadSequence()" class="group relative px-10 py-5 bg-black text-white font-bold tracking-widest text-sm hover:bg-zinc-800 transition-all duration-300 overflow-hidden active:scale-95 shadow-xl hover:shadow-2xl rounded-sm">
+                                <div class="absolute inset-0 w-full h-full bg-zinc-800 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out -z-0"></div>
+                                <span class="relative z-10 flex items-center gap-3">
+                                  INITIALIZE DOWNLOAD
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                  </svg>
+                                </span>
+                              </button>
+                              
+                              <div class="mt-6 text-[10px] text-zinc-400 font-bold">
+                                v${CONFIG.version} &bull; SECURE CONNECTION
+                              </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.view === 'loading') {
+                    contentDiv.innerHTML = `
+                        <div class="animate-fade-in flex flex-col items-center justify-center space-y-6 font-mono w-full max-w-md">
+                          <div class="relative w-24 h-24 mb-4">
+                            <div class="absolute inset-0 border-2 border-zinc-200 rounded-full"></div>
+                            <div class="absolute inset-0 border-t-2 border-black rounded-full animate-spin"></div>
+                            <div class="absolute inset-4 border-2 border-zinc-300 rounded-full opacity-50"></div>
+                            <div class="absolute inset-4 border-b-2 border-black rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full animate-pulse"></div>
+                          </div>
 
-  function validate() {
-    // Idade 10-120
-    const ageVal = fields.age.value.trim();
-    toggleValidity(fields.age, ageVal && +ageVal >= 10 && +ageVal <= 120);
+                          <div class="w-full space-y-1 text-xs sm:text-sm text-zinc-600">
+                            <div class="flex justify-between items-center border-b border-zinc-300 pb-1 mb-2">
+                              <span>SYSTEM_STATUS</span>
+                              <span class="text-black font-bold animate-pulse">INITIALIZING</span>
+                            </div>
+                            <div id="loading-logs" class="space-y-1 min-h-[60px]"></div>
+                          </div>
 
-    // Texto minimo 2 chars
-    toggleValidity(fields.recruiter, fields.recruiter.value.trim().length >= 2);
-    toggleValidity(fields.preferredName, fields.preferredName.value.trim().length >= 2);
-  }
+                          <div class="w-full h-1 bg-zinc-200 rounded-full overflow-hidden mt-4">
+                            <div id="progress-bar" class="h-full bg-black transition-all duration-100 ease-out" style="width: 0%"></div>
+                          </div>
+                          <div id="progress-text" class="w-full text-right text-xs text-zinc-500 font-mono">0%</div>
+                        </div>
+                    `;
+                    runLoaderSimulation();
+                } else if (state.view === 'terminal') {
+                    contentDiv.innerHTML = `
+                        <div class="w-full max-w-lg">
+                            <div id="terminal-box" class="w-full font-mono text-left space-y-2 text-xs md:text-sm bg-zinc-50/50 p-6 rounded border border-zinc-200 shadow-inner min-h-[300px]">
+                                 <!-- Logs injected here -->
+                                 <div class="cursor pl-3 text-black font-bold"></div>
+                            </div>
+                        </div>
+                    `;
+                    runTerminalSequence();
+                } else if (state.view === 'download') {
+                    contentDiv.innerHTML = `
+                      <div class="animate-scale-in w-full flex flex-col items-center text-center">
+                        <div class="mb-6 rounded-full bg-black text-white p-5 shadow-lg animate-bounce">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                        </div>
 
-  function toggleValidity(el, ok) {
-    el.classList.remove('valid','invalid');
-    if (!el.value.trim()) return; // não marca vazio
-    el.classList.add(ok ? 'valid' : 'invalid');
-  }
+                        <h2 class="text-3xl font-black text-black mb-2 tracking-tight">ACCESS GRANTED</h2>
+                        <p class="text-zinc-600 text-sm mb-8 max-w-xs mx-auto">
+                          Authorization confirmed. The WPanel package is ready to be downloaded.
+                        </p> 
 
-  function updatePreview() {
-    validate();
-    const data = readData();
-    resultText.textContent = buildFormattedText(data);
-    resultText.style.display = 'block';
-    copyBtn.style.display = 'inline-block';
-    updateProgress();
-  }
+                        <a href="#" onclick="downloadFile(); return false;" 
+                          class="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-black bg-transparent text-black font-bold hover:bg-black hover:text-white transition-all duration-300 group rounded-lg shadow-sm hover:shadow-xl">
+                          
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:animate-bounce">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                          </svg>
+                          <span class="font-mono text-sm tracking-wider">DOWNLOAD WPANEL</span>
+                        </a>
 
-  Object.values(fields).forEach(el => el.addEventListener('input', updatePreview));
-  radios.forEach(name => document.getElementsByName(name).forEach(r => r.addEventListener('change', updatePreview)));
+                        <div class="mt-6 flex justify-between w-full text-[10px] text-zinc-400 font-bold font-mono uppercase border-t border-zinc-200 pt-4">
+                          <span>Owner: PhantomWayfex</span>
+                          <span>wEBSITE OFICIALX</span>
+                        </div>
+                      </div>
+                    `;
+                    playSuccessSound();
+                }
+            }, 100);
+        }
 
-  // ------ Botões ------
-  document.getElementById('finalizeBtn').addEventListener('click', updatePreview);
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(resultText.textContent).then(() => {
-      const old = copyBtn.textContent;
-      copyBtn.textContent = '✅ Copiado!';
-      setTimeout(() => copyBtn.textContent = old, 1800);
-    });
-  });
+        // --- 4. FLOW LOGIC ---
 
-  // ------ Barra de Progresso (6 obrigatórios) ------
-  const progressEl = document.getElementById('progress');
-  const progressLabel = document.getElementById('progressLabel');
-  const progressSteps = document.getElementById('progressSteps');
-  const requiredChecks = () => ([
-    fields.age.value.trim() && +fields.age.value >= 10 && +fields.age.value <= 120,
-    fields.recruiter.value.trim().length >= 2,
-    fields.preferredName.value.trim().length >= 2,
-    !!getRadioValue('role'),
-    !!getRadioValue('activityLevel'),
-    !!getRadioValue('activeHours'),
-  ]);
-  function updateProgress() {
-    const checks = requiredChecks();
-    const done = checks.filter(Boolean).length;
-    const pct = Math.round((done/6)*100);
-    progressEl.style.width = pct + '%';
-    progressEl.parentElement.setAttribute('aria-valuenow', String(pct));
-    progressLabel.textContent = pct + '% completo';
-    progressSteps.textContent = `${done} de 6 obrigatórios`;
-  }
-  updateProgress();
+        function startDownloadSequence() {
+            // Wake up Audio Context
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            
+            playClickSound();
 
-  // ------ Cards expansíveis ------
-  document.querySelectorAll('[data-toggle]').forEach(h => {
-    h.addEventListener('click', () => {
-      const card = h.closest('.card');
-      const isOpen = card.classList.toggle('open');
-      const tog = h.querySelector('.card-toggle');
-      if (tog) tog.textContent = isOpen ? '➖' : '➕';
-    });
-  });
+            // Try to play background audio if not already playing
+            const audio = document.getElementById('bg-audio');
+            if(audio.paused) toggleAudio();
 
-  // ------ Inicia preview vazio para mostrar bloco de resultado ------
-  updatePreview();
-</script>
+            state.view = 'loading';
+            render();
+        }
 
+        function runLoaderSimulation() {
+            let progress = 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-text');
+            const logContainer = document.getElementById('loading-logs');
+            
+            const logs = [
+                'CONNECTING TO SECURE SERVER...',
+                'VERIFYING HANDSHAKE PROTOCOLS...',
+                'ALLOCATING BANDWIDTH...',
+                'DECRYPTING PACKAGES...'
+            ];
+
+            // Progress Bar
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 5) + 1;
+                if(progress > 100) progress = 100;
+                
+                if(bar) bar.style.width = `${progress}%`;
+                if(txt) txt.innerText = `${progress}%`;
+                
+                // Randomly play small ticks during loading
+                if(Math.random() > 0.7) playTone(800 + Math.random()*200, 'square', 0.01, 0.01);
+
+                if(progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        state.view = 'terminal';
+                        render();
+                    }, 500);
+                }
+            }, 100);
+
+            // Log messages
+            let logIndex = 0;
+            function addLog() {
+                if(logIndex < logs.length && logContainer) {
+                    const div = document.createElement('div');
+                    div.className = 'opacity-80 animate-fade-in';
+                    div.innerHTML = `<span class="text-zinc-400 mr-2">></span><span class="tracking-wide text-zinc-700">${logs[logIndex]}</span>`;
+                    logContainer.appendChild(div);
+                    logIndex++;
+                    playTypingSound(); 
+                    setTimeout(addLog, 800);
+                }
+            }
+            addLog();
+        }
+
+        function runTerminalSequence() {
+            let lineIndex = 0;
+            const container = document.getElementById('terminal-box');
+            // Keep the cursor at the bottom
+            const cursor = container.querySelector('.cursor');
+
+            function typeNextLine() {
+                if(lineIndex >= CONFIG.bootMessages.length) {
+                    setTimeout(() => {
+                        state.view = 'download';
+                        render();
+                    }, 1000);
+                    return;
+                }
+
+                const lineText = CONFIG.bootMessages[lineIndex];
+                const parts = lineText.split(' ');
+                const prefix = parts[0];
+                const rest = parts.slice(1).join(' ');
+
+                const div = document.createElement('div');
+                div.className = 'border-l-2 border-black/30 pl-3 mb-1 flex flex-wrap';
+                div.innerHTML = `<span class="font-bold text-black mr-2">${prefix}</span><span class="text-zinc-600 typing-span"></span>`;
+                
+                container.insertBefore(div, cursor);
+                
+                // Typing effect for the "rest" of the message
+                const typingSpan = div.querySelector('.typing-span');
+                let charIndex = 0;
+                
+                const typeInterval = setInterval(() => {
+                    if (charIndex < rest.length) {
+                        typingSpan.textContent += rest.charAt(charIndex);
+                        playTypingSound(); // Play sound for each character
+                        charIndex++;
+                    } else {
+                        clearInterval(typeInterval);
+                        lineIndex++;
+                        setTimeout(typeNextLine, 300); // Wait before next line
+                    }
+                }, 25); // Typing speed
+            }
+
+            typeNextLine();
+        }
+
+        function downloadFile() {
+             const textContent = `@echo off\necho Installing WPanel...\necho Verified by ${CONFIG.owner}\npause`;
+             const blob = new Blob([textContent], { type: 'application/octet-stream' });
+             const url = window.URL.createObjectURL(blob);
+             const a = document.createElement('a');
+             a.style.display = 'none';
+             a.href = url;
+             a.download = 'WPanel_Setup.bat';
+             document.body.appendChild(a);
+             a.click();
+             window.URL.revokeObjectURL(url);
+             playClickSound();
+        }
+
+        // --- 5. AUDIO TOGGLE LOGIC ---
+        function toggleAudio() {
+            // Ensure Audio Context is active
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+
+            const audio = document.getElementById('bg-audio');
+            const iconMuted = document.getElementById('icon-muted');
+            const iconPlaying = document.getElementById('icon-playing');
+
+            if (audio.paused) {
+                audio.volume = 0.4;
+                audio.play().catch(e => console.error("Autoplay blocked", e));
+                state.isMuted = false;
+                iconMuted.classList.add('hidden');
+                iconPlaying.classList.remove('hidden');
+            } else {
+                audio.pause();
+                state.isMuted = true;
+                iconMuted.classList.remove('hidden');
+                iconPlaying.classList.add('hidden');
+            }
+        }
+
+        // --- 6. 3D TILT EFFECT (ORIGINAL) ---
+        document.addEventListener('mousemove', (e) => {
+            const card = document.getElementById('tilt-card');
+            if(!card) return;
+
+            const xPct = (e.clientX / window.innerWidth) - 0.5;
+            const yPct = (e.clientY / window.innerHeight) - 0.5;
+
+            // Rotate based on mouse position
+            card.style.transform = `rotateX(${yPct * -15}deg) rotateY(${xPct * 15}deg)`;
+        });
+
+        // --- 7. BACKGROUND ANIMATION (ORIGINAL WHITE/BLACK) ---
+        class BackgroundAnimation {
+            constructor() {
+                this.canvas = document.getElementById('bg-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.resize();
+                
+                window.addEventListener('resize', () => this.resize());
+                this.animate();
+            }
+
+            resize() {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+                this.canvas.width = this.width;
+                this.canvas.height = this.height;
+                this.initParticles();
+            }
+
+            initParticles() {
+                this.particles = [];
+                const count = Math.min(Math.floor((this.width * this.height) / 14000), 120);
+                
+                for(let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x: Math.random() * this.width,
+                        y: Math.random() * this.height,
+                        vx: (Math.random() - 0.5) * 0.55,
+                        vy: (Math.random() - 0.5) * 0.55,
+                        size: Math.random() * 1.5 + 1.0
+                    });
+                }
+            }
+
+            animate() {
+                // Clear white
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(0, 0, this.width, this.height);
+
+                this.ctx.fillStyle = '#000000';
+                this.ctx.strokeStyle = '#000000';
+
+                for (let i = 0; i < this.particles.length; i++) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > this.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > this.height) p.vy *= -1;
+
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+
+                    // Connections
+                    for (let j = i + 1; j < this.particles.length; j++) {
+                        const p2 = this.particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 130) {
+                            this.ctx.beginPath();
+                            this.ctx.lineWidth = 0.5;
+                            this.ctx.globalAlpha = 0.05 * (1 - (dist / 130));
+                            this.ctx.moveTo(p.x, p.y);
+                            this.ctx.lineTo(p2.x, p2.y);
+                            this.ctx.stroke();
+                            this.ctx.globalAlpha = 1.0;
+                        }
+                    }
+                }
+
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        // Initialize Background and Initial View
+        window.addEventListener('DOMContentLoaded', () => {
+            new BackgroundAnimation();
+            render(); // Render Welcome Screen
+        });
+
+    </script>
 </body>
 </html>
